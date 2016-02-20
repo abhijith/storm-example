@@ -1,33 +1,6 @@
-# storm-example
+### Contains
 
-FIXME: description
-
-## Installation
-
-Download from http://example.com/FIXME.
-
-## Usage
-
-FIXME: explanation
-
-    $ java -jar storm-example-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
-
-## License
-
-Copyright © 2016 FIXME
+* shell bolt in ruby
+* shell spout in ruby
+* Kinesis spout example in clojure
+* Topology wide tick tuple and Bolt specific tick tuple configuration/usage.

@@ -48,38 +48,47 @@
                                (.withRegion Regions/AP_SOUTHEAST_1))]
     (KinesisSpout. kinesis-spout-config aws-creds client-config)))
 
+(defn tick? [tuple]
+  (and (= (.getSourceComponent tuple) "")
+       (= (.getSourceStreamId tuple) "")))
+
 (defbolt echo ["partition-key" "sequence-number" "record-data"] [tuple collector]
   (let [{:keys [partition-key sequence-number record] :as packet} (->packet tuple)]
-    (emit-bolt! collector [partition-key sequence-number packet] :anchor tuple)
-    (ack! collector tuple)))
+    (if (tick? tuple)
+      nil
+      (do (emit-bolt! collector [partition-key sequence-number packet] :anchor tuple)
+          (ack! collector tuple)))))
 
 (defn mk-topology []
   (topology
    { "kinesis-spout" (spout-spec (kinesis-spout "Foo" "localhost:2181") :p 1) }
    {
     "echo-bolt" (bolt-spec {"kinesis-spout" ["partition-key"]} echo :p 5)
-    "simple-bolt" (shell-bolt-spec {"echo-bolt" :shuffle } ;; could be grouped based on guid or some other field
-                                 "ruby"
-                                 "simple.rb"
-                                 ["record-data"]
-                                 :p 1)
+    "simple-bolt" (shell-bolt-spec {"echo-bolt" :shuffle }
+                                   "ruby"
+                                   "simple.rb"
+                                   ["record-data"]
+                                   :p 1
+                                   :conf {"topology.tick.tuple.freq.secs" 10})
     }
    ))
 
 (defn mk-shell-topology []
   (topology
-   { "sentence-spout" (shell-spout-spec "ruby" "sentencespout.rb" ["col1"] :p 1) }
+   { "sentence-spout" (shell-spout-spec "ruby" "sentencespout.rb" ["sentence"] :p 1 :conf nil) }
    { "split-bolt" (shell-bolt-spec { "sentence-spout" :shuffle }
                                    "ruby"
                                    "splitsentence.rb"
                                    ["token"]
-                                   :p 1)
+                                   :p 1
+                                   :conf {"topology.tick.tuple.freq.secs" 10})
+
     }))
 
 ;; {TOPOLOGY-DEBUG true STORM-ZOOKEEPER-SERVERS "localhost" STORM-ZOOKEEPER-PORT "2181"}
 (defn run-local! []
   (let [cluster (LocalCluster.)]
-    (.submitTopology cluster "word-count" {TOPOLOGY-DEBUG true } (mk-topology))))
+    (.submitTopology cluster "sample" {TOPOLOGY-DEBUG true} (mk-topology))))
 
 (defn submit-topology! [name]
   (StormSubmitter/submitTopology

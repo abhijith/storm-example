@@ -1,16 +1,24 @@
 require "./storm"
 
 class SplitSentenceBolt < Storm::Bolt
+  @count = 0
+  class << self
+    attr_accessor :count
+  end
+
   def process(tup)
     begin
       a = tup.attributes.to_s
-      File.open("/home/vagrant/tuples.log", "a+") {|f| f.write(a + "\n") }
       vals = tup.values[0]
       if vals.nil?
         emit(["nil"])
       else
-        vals.split(" ").each do |word|
-          emit([word])
+        if tup.tick?
+          emit([SplitSentenceBolt.count])
+        else
+          vals.split(" ").each do |word|
+            SplitSentenceBolt.count = SplitSentenceBolt.count + 1
+          end
         end
       end
     rescue Exception => e

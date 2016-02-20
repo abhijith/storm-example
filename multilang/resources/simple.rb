@@ -17,15 +17,31 @@ require "./storm"
 # }
 
 class SimpleBolt < Storm::Bolt
+  @acc   = []
+  @count = 0
+  class << self
+    attr_accessor :acc, :count
+  end
+
   def process(tup)
-    log tup.attributes
+    attrs = tup.attributes
+    logInfo attrs
+    logInfo SimpleBolt.acc
+    logInfo SimpleBolt.count
+
     begin
       vals = tup.values
       if not vals.empty?
-        partition_key, sequence_number, record_data = vals
-        emit([record_data])
+        if tup.tick?
+          emit(SimpleBolt.acc)
+          ack(tup)
+          SimpleBolt.acc = []
+        else
+          partition_key, sequence_number, record_data = vals
+          SimpleBolt.acc << record_data
+        end
       end
-    rescue Exception => e
+    rescue StandardError => e
       emit([e.message])
     end
   end
