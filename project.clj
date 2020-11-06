@@ -5,7 +5,6 @@
 
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [commons-collections/commons-collections "3.2.1"]
-                 [com.amazonaws/kinesis-storm-spout "1.1.0"]
                  [org.apache.storm/storm-core "0.10.0"]
                  [clj-json "0.5.3"]]
 
