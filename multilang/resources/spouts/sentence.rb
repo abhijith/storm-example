@@ -1,4 +1,4 @@
-require "./storm"
+require_relative "../storm"
 
 class SentenceSpout < Storm::Spout
 
@@ -7,7 +7,6 @@ class SentenceSpout < Storm::Spout
          "the man petted the dog",
          "four score and seven years ago",
          "an apple a day keeps the doctor away"]
-    sleep(1)
     emit([s.sample])
   end
 

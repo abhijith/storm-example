@@ -74,6 +74,7 @@ module Storm
     end
 
     def send_pid(heartbeat_dir)
+      heartbeat_dir = "/tmp"
       pid = Process.pid
       send_msg_to_parent({'pid' => pid})
       File.open("#{heartbeat_dir}/#{pid}", "w").close
@@ -192,6 +193,7 @@ module Storm
 
     def run
       Storm::Protocol.mode = 'bolt'
+
       prepare(*handshake)
       begin
         while true
@@ -228,7 +230,7 @@ module Storm
           msg = read_command
           case msg['command']
             when 'next'
-              nextTuple
+              tup = nextTuple
             when 'ack'
               ack(msg['id'])
             when 'fail'

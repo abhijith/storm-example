@@ -3,7 +3,7 @@
   :repositories {}
   :aot :all
 
-  :dependencies [[org.clojure/clojure "1.7.0"]
+  :dependencies [[org.clojure/clojure "1.8.0"]
                  [commons-collections/commons-collections "3.2.1"]
                  [org.apache.storm/storm-core "0.10.0"]
                  [clj-json "0.5.3"]]

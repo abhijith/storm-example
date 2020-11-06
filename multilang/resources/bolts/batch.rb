@@ -1,4 +1,4 @@
-require "./storm"
+require_relative "../storm"
 
 class SplitSentenceBolt < Storm::Bolt
   @count = 0
@@ -13,6 +13,7 @@ class SplitSentenceBolt < Storm::Bolt
       if vals.nil?
         emit(["nil"])
       else
+        logInfo(tup)
         if tup.tick?
           emit([SplitSentenceBolt.count])
         else
