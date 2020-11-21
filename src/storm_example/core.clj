@@ -1,6 +1,8 @@
 (ns storm-example.core
-  (:import [backtype.storm StormSubmitter LocalCluster])
-  (:use [backtype.storm clojure config])
+  (:import [org.apache.storm StormSubmitter LocalCluster]
+   [org.apache.log4j Logger]
+   [org.apache.storm.utils Utils])
+  (:use [org.apache.storm clojure config])
   (:gen-class))
 
 (def demo
@@ -12,21 +14,31 @@
     "multistream-spout" (shell-spout-spec "ruby" "spouts/multistream.rb" {"name-stream" ["id" "name"] "nickname-stream" ["id" "nickname"] } :p 1)
     }
 
-
    {
-    "tick-bolt"
-    (shell-bolt-spec {"sentence-spout" :shuffle } "ruby" "bolts/tick.rb" ["words"] :p 1 :conf {"topology.tick.tuple.freq.secs" 10})
-    "words-bolt"       (shell-bolt-spec {"sentence-spout" :shuffle } "ruby" "bolts/split.rb" ["words"])
-    "banner-bolt"        (shell-bolt-spec {"sentence-spout" :shuffle } "ruby" "bolts/banner.rb" ["banner"] :p 1)
-    "capitalize-bolt"  (shell-bolt-spec {"words-bolt" :shuffle } "ruby" "bolts/capitalize.rb" ["capitalized"] :p 1)
-    "count-bolt"       (shell-bolt-spec {"words-bolt" :shuffle } "ruby" "bolts/count.rb" ["count"] :p 1 )
-    "word-bolt"        (shell-bolt-spec {"words-bolt" :shuffle } "ruby" "bolts/word.rb" ["word-out"] :p 1 )
-    "freq-bolt"        (shell-bolt-spec {"word-bolt" ["word-out"] } "ruby" "bolts/freq.rb" ["freq-map"] :p 2 )
-    "global-freq-bolt" (shell-bolt-spec {"word-bolt" :all } "ruby" "bolts/freq.rb" ["freq-map"] :p 2 )
-    "multistream-bolt-shuffle" (shell-bolt-spec {["multistream-spout" "name-stream"] :shuffle ["multistream-spout" "nickname-stream"] :shuffle "sentence-spout" :shuffle}
-                                  "ruby" "bolts/multistream.rb" ["multi"] :p 1 )
+    "tick-bolt"        (shell-bolt-spec {"sentence-spout" :shuffle }
+                                        "ruby" "bolts/tick.rb" ["words"] :p 1 :conf {"topology.tick.tuple.freq.secs" 10})
+    "words-bolt"       (shell-bolt-spec {"sentence-spout" :shuffle }
+                                        "ruby" "bolts/split.rb" ["words"])
+    "banner-bolt"      (shell-bolt-spec {"sentence-spout" :shuffle }
+                                        "ruby" "bolts/banner.rb" ["banner"] :p 1)
+    "capitalize-bolt"  (shell-bolt-spec {"words-bolt" :shuffle }
+                                        "ruby" "bolts/capitalize.rb" ["capitalized"] :p 1)
+    "count-bolt"       (shell-bolt-spec {"words-bolt" :shuffle }
+                                        "ruby" "bolts/count.rb" ["count"] :p 1 )
+    "word-bolt"        (shell-bolt-spec {"words-bolt" :shuffle }
+                                        "ruby" "bolts/word.rb" ["word-out"] :p 1 )
+    "freq-bolt"        (shell-bolt-spec {"word-bolt" ["word-out"] }
+                                        "ruby" "bolts/freq.rb" ["freq-map"] :p 2 )
+    "global-freq-bolt" (shell-bolt-spec {"word-bolt" :all }
+                                        "ruby" "bolts/freq.rb" ["freq-map"] :p 2 )
+    "multistream-bolt-shuffle" (shell-bolt-spec {["multistream-spout" "name-stream"] :shuffle
+                                                 ["multistream-spout" "nickname-stream"] :shuffle
+                                                 "sentence-spout" :shuffle}
+                                                "ruby" "bolts/debug.rb" ["multi"] :p 1 )
 
-    "multistream-in-bolt-fields" (shell-bolt-spec {["multistream-spout" "name-stream"] ["id"] ["multistream-spout" "nickname-stream"] ["id"] "sentence-spout" :shuffle}
+    "multistream-in-bolt-fields" (shell-bolt-spec {["multistream-spout" "name-stream"] ["id"]
+                                                   ["multistream-spout" "nickname-stream"] ["id"]
+                                                   "sentence-spout" :shuffle}
                                                   "ruby" "bolts/join.rb" ["multi"] :p 1 )
 
     "multistream-in-multistream-out-bolt-fields" (shell-bolt-spec {["multistream-spout" "name-stream"] ["id"]

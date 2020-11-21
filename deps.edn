@@ -1,0 +1,3 @@
+{:deps
+ {org.apache.storm/storm-core {:mvn/version "2.2.0"}}
+ :paths ["src" "multilang" "multilang/resources"]}
