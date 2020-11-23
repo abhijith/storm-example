@@ -8,16 +8,17 @@
 
   <Loggers>
 
-    <Root level="INFO">
+    <Root level="ERROR">
       <AppenderRef ref="STDOUT"/>
     </Root>
 
-    <Root level="INFO">
-      <AppenderRef ref="APP"/>
-    </Root>
+    <logger name="org.apache.storm.multilang.ShellMsg.ShellLogLevel">
+      <level value="INFO"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
 
     <logger name="org.apache.storm.daemon.executor">
-      <level value="INFO"/>
+      <level value="WARN"/>
       <appender-ref ref="STDOUT"/>
     </logger>
 
@@ -32,7 +33,7 @@
     </logger>
 
     <logger name="org.apache.storm.zookeeper.ClientCnxn">
-      <level value="INFO"/>
+      <level value="OFF"/>
       <appender-ref ref="STDOUT"/>
     </logger>
 
@@ -62,7 +63,7 @@
     </logger>
 
     <logger name="org.apache.storm.shade.org.apache.zookeeper.ClientCnxn">
-      <level value="INFO"/>
+      <level value="WARN"/>
       <appender-ref ref="STDOUT"/>
     </logger>
 
