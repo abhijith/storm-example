@@ -1,7 +1,5 @@
 (ns storm-example.core
-  (:import [org.apache.storm StormSubmitter LocalCluster]
-   [org.apache.log4j Logger]
-   [org.apache.storm.utils Utils])
+  (:import [org.apache.storm StormSubmitter LocalCluster])
   (:use [org.apache.storm clojure config])
   (:gen-class))
 
