@@ -1,91 +1,96 @@
 <configuration>
 
   <Appenders>
-        <Console name="STDOUT" target="SYSTEM_OUT">
-            <PatternLayout pattern="%-4r [%t] %-5p %c - %msg%n"/>
-        </Console>
-    </Appenders>
-    <Loggers>
+    <Console name="STDOUT" target="SYSTEM_OUT">
+      <PatternLayout pattern="%-4r [%t] %-5p %c - %msg%n"/>
+    </Console>
+  </Appenders>
 
-        <Root level="OFF">
-            <AppenderRef ref="STDOUT"/>
-        </Root>
+  <Loggers>
 
-        <logger name="org.apache.storm.daemon.executor">
-            <level value="INFO"/>
-            <appender-ref ref="STDOUT"/>
-        </logger>
+    <Root level="INFO">
+      <AppenderRef ref="STDOUT"/>
+    </Root>
 
-        <logger name="org.apache.storm.util.Utils">
-            <level value="OFF"/>
-            <appender-ref ref="STDOUT"/>
-        </logger>
+    <Root level="INFO">
+      <AppenderRef ref="APP"/>
+    </Root>
 
-        <logger name="org.apache.storm.messaging.netty">
-            <level value="FATAL"/>
-            <appender-ref ref="STDOUT"/>
-        </logger>
+    <logger name="org.apache.storm.daemon.executor">
+      <level value="INFO"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
 
-        <logger name="org.apache.storm.zookeeper.ClientCnxn">
-            <level value="INFO"/>
-            <appender-ref ref="STDOUT"/>
-        </logger>
+    <logger name="org.apache.storm.util.Utils">
+      <level value="OFF"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
 
-        <logger name="org.apache.storm.zookeeper.server.ZooKeeperServer">
-            <level value="FATAL"/>
-            <appender-ref ref="STDOUT"/>
-        </logger>
+    <logger name="org.apache.storm.messaging.netty">
+      <level value="FATAL"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
 
-        <logger name="org.apache.storm.zookeeper.ZooKeeper">
-            <level value="FATAL"/>
-            <appender-ref ref="STDOUT"/>
-        </logger>
+    <logger name="org.apache.storm.zookeeper.ClientCnxn">
+      <level value="INFO"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
 
-        <logger name="org.apache.storm.daemon.worker">
-            <level value="FATAL"/>
-            <appender-ref ref="STDOUT"/>
-        </logger>
+    <logger name="org.apache.storm.zookeeper.server.ZooKeeperServer">
+      <level value="FATAL"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
 
-        <logger name="org.apache.storm.zookeeper.storm.FinalRequestProcessor">
-            <level value="FATAL"/>
-            <appender-ref ref="STDOUT"/>
-        </logger>
+    <logger name="org.apache.storm.zookeeper.ZooKeeper">
+      <level value="FATAL"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
 
-	<logger name="org.apache.storm.shade.org.apache.zookeeper.server.ZooKeeperServer">
-          <level value="OFF"/>
-          <appender-ref ref="STDOUT"/>
-        </logger>
+    <logger name="org.apache.storm.daemon.worker">
+      <level value="FATAL"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
 
-	<logger name="org.apache.storm.shade.org.apache.zookeeper.ClientCnxn">
-            <level value="INFO"/>
-            <appender-ref ref="STDOUT"/>
-        </logger>
+    <logger name="org.apache.storm.zookeeper.storm.FinalRequestProcessor">
+      <level value="FATAL"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
 
-        <logger name="org.apache.storm.daemon.nimbus">
-            <level value="WARN"/>
-            <appender-ref ref="STDOUT"/>
-        </logger>
+    <logger name="org.apache.storm.shade.org.apache.zookeeper.server.ZooKeeperServer">
+      <level value="OFF"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
 
-        <logger name="b.s.d.nimbus">
-            <level value="WARN"/>
-            <appender-ref ref="STDOUT"/>
-        </logger>
+    <logger name="org.apache.storm.shade.org.apache.zookeeper.ClientCnxn">
+      <level value="INFO"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
 
-        <logger name="org.apache.storm.config">
-            <level value="OFF"/>
-            <appender-ref ref="STDOUT"/>
-        </logger>
+    <logger name="org.apache.storm.daemon.nimbus">
+      <level value="WARN"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
 
-        <logger name="org.apache.storm.security.auth.authorizer" additivity="false">
-            <level value="WARN"/>
-            <appender-ref ref="STDOUT"/>
-        </logger>
+    <logger name="b.s.d.nimbus">
+      <level value="WARN"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
 
-        <logger name="org.apache.storm.metric.LoggingMetricsConsumer" additivity="false">
-            <level value="WARN"/>
-            <appender-ref ref="STDOUT"/>
-        </logger>
+    <logger name="org.apache.storm.config">
+      <level value="OFF"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
 
-    </Loggers>
+    <logger name="org.apache.storm.security.auth.authorizer" additivity="false">
+      <level value="WARN"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="org.apache.storm.metric.LoggingMetricsConsumer" additivity="false">
+      <level value="WARN"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
+
+  </Loggers>
 
 </configuration>
